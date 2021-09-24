@@ -1,0 +1,70 @@
+#apiVersion: v1
+#kind: Service
+#metadata:
+#  name: galera-rs
+#  labels:
+#    app: galera-rs
+#spec:
+#  type: NodePort
+#  ports:
+#    - nodePort: 30003
+#      port: 3306
+#  selector:
+#    app: galera
+#
+#---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: galera
+  labels:
+    app: galera
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: galera
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: galera
+    spec:
+      containers:
+      - name: galera
+        image: severalnines/mariadb:10.1
+        env:
+        # kubectl create secret generic mysql-pass --from-file=password.txt
+        - name: MYSQL_ROOT_PASSWORD
+          value: '17082002'
+        - name: DISCOVERY_SERVICE
+          value: etcd-client:2379
+        - name: XTRABACKUP_PASSWORD
+          value: '17082002'
+        - name: CLUSTER_NAME
+          value: mariadb_galera
+        - name: MYSQL_DATABASE
+          value: mydatabase
+        - name: MYSQL_USER
+          value: obiw
+        - name: MYSQL_PASSWORD
+          value: '17082002'
+        ports:
+        - name: mysql
+          containerPort: 3306
+        readinessProbe:
+          exec:
+            command:
+            - /healthcheck.sh
+            - --readiness
+          initialDelaySeconds: 120
+          periodSeconds: 1
+        livenessProbe:
+          exec:
+            command:
+            - /healthcheck.sh
+            - --liveness
+          initialDelaySeconds: 120
+          periodSeconds: 1

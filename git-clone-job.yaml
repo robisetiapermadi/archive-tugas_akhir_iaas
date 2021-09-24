@@ -1,0 +1,27 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: git-clone-job
+spec:
+  completions: 1
+  parallelism: 1
+  template:
+    spec:
+      restartPolicy: Never
+      volumes:
+        - name: webservercontent
+          persistentVolumeClaim:
+            claimName: nfs-volume-front-claim
+      containers:
+        - name: git-cloner
+          image: obiw/absensi-pembangunan:job
+          args:
+            - git
+            - clone
+            - --single-branch
+            - --
+            - git@github.com:robisetiapermadi/kubernetes-webcontent.git
+            - /data
+          volumeMounts:
+            - mountPath: /data
+              name: webservercontent

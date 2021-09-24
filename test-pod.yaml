@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: kas-pod
+spec:
+  containers:
+    - name: kas-app
+      image: shalmameila/kas-app:1.2
+      ports:
+        - containerPort: 80

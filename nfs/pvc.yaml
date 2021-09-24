@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nfs-volume-db-claim
+spec:
+  selector:
+    matchLabels:
+      volume: nfs-volume-db
+  accessModes:
+    - ReadWriteMany
+  storageClassName: ""
+  resources:
+    requests:
+      storage: 2Gi
+#---
+#apiVersion: v1
+#kind: PersistentVolumeClaim
+#metadata:
+#  name: nfs-volume-front-claim
+#spec:
+#  selector:
+#    matchLabels:
+#      volume: nfs-volume-front
+#  accessModes:
+#    - ReadWriteMany
+#  storageClassName: ""
+#  resources:
+#    requests:
+#      storage: 2Gi

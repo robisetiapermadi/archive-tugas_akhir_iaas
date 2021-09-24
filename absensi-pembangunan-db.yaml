@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: absensi-pembangunan-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: absensi-pembangunan-db
+  template:
+    metadata:
+      name: absensi-pembangunan-db
+      labels:
+        app: absensi-pembangunan-db
+    spec:
+      containers:
+        - name: absensi-pembangunan-db
+          image: mariadb
+          ports:
+            - containerPort: 3306
+          env:
+            - name: MARIADB_ROOT_PASSWORD 
+              value: '17082002'

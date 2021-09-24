@@ -1,0 +1,31 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nfs-volume-db
+  labels:
+    volume: nfs-volume-db
+spec:
+  capacity:
+    storage: 2Gi
+  accessModes:
+    - ReadWriteMany
+  nfs:
+    # FIXME: use the right IP
+    server: 10.111.230.242
+    path: "/exports"
+#---
+#apiVersion: v1
+#kind: PersistentVolume
+#metadata:
+#  name: nfs-volume-front
+#  labels:
+#    volume: nfs-volume-front
+#spec:
+#  capacity:
+#    storage: 2Gi
+#  accessModes:
+#    - ReadWriteMany
+#  nfs:
+#    # FIXME: use the right IP
+#    server: 10.96.211.92
+#    path: "/exports"

@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: absensi-pembangunan-front
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: absensi-pembangunan-front
+  template:
+    metadata:
+      name: absensi-pembangunan-front
+      labels:
+        app: absensi-pembangunan-front
+    spec:
+#     affinity:
+#        nodeAffinity:
+#          requiredDuringSchedulingIgnoredDuringExecution:
+#            nodeSelectorTerms:
+#            - matchExpressions:
+#              - key: kubernetes.io/hostname
+#                operator: In
+#                values:
+#                - node-worker1
+#                - node-worker2
+      containers:
+        - name: absensi-pembangunan-front
+          image: obiw/absensi-pembangunan:3-ci-apache
+          ports:
+            - containerPort: 80
+          env:
+            - name: DB_HOST
+              value: "10.108.189.122"
+            - name: DB_PORT
+              value: "3306"
+            - name: DB_USERNAME
+              value: "root"
+            - name: DB_PASSWORD
+              value: "17082002"
+            - name: DB_NAME
+              value: "e_presence"
+            - name: APP_HOST
+              value: "http://192.168.43.207:30000"
+        imagePullSecrets:
+          - name: regcred
+          #volumeMounts:
+          #  - mountPath: "/var/www/html/"
+          #    name: webservercontent
+      
+      

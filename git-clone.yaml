@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: git-clone
+spec:
+  volumes:
+    - name: webservercontent
+      persistentVolumeClaim:
+        claimName: nfs-volume-front-claim
+  containers:
+    - name: git-cloner
+      image: obiw/absensi-pembangunan:job
+      args:
+        - git
+        - clone
+        - --single-branch
+        - --
+        - git@github.com:robisetiapermadi/kubernetes-webcontent.git
+        - /data
+      volumeMounts:
+        - mountPath: /data
+          name: webservercontent
